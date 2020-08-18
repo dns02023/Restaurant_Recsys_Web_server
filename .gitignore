@@ -13,3 +13,4 @@ recapp/migrations/*
 signapp/migrations/*
 venv/*
 manage.py
+static/*
