@@ -9,6 +9,6 @@ media
 .idea/
 django_recsys/settings.py
 secrets.json
-*/migrations
+*/migrations/*
 venv/*
 manage.py
