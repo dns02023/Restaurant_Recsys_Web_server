@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <h2 class="border-bottom py-2">{{ place.place_name }}</h2>
+    <div>이 곳과 유사한 맛집들은?</div>
+    {% for similar in similars %}
+    <div>{{ similar.place_name }}</div>
+    {% endfor %}
+
+    {% if place.review_set.count > 0 %}
+        <div>평균 평점 : {{ place.average_rating }}</div>
+    {% endif %}
+    {% if place.review_set.count == 0 %}
+        <div>아직 아무도 평가하지 않았습니다.</div>
+    {% endif %}
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;">{{ place.place_location }}</div>
+            <div class="d-flex justify-content-end">
+                <div class="badge badge-light p-2">
+                    {{ place.place_tags }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 class="border-bottom my-3 py-2">{{place.review_set.count}}개의 리뷰가 있습니다.</h5>
+    {% for review in place.review_set.all %}
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-header">{{ review.rating }}점 입니다.</div>
+            <div class="card-text" style="white-space: pre-line;">{{ review.content }}</div>
+            <div class="d-flex justify-content-end">
+
+                {% if review.modify_date %}
+                <div class="badge badge-light p-2 text-left mx-3">
+                <div class="mb-2">수정됨</div>
+                <div>{{ review.modify_date }}</div>
+                </div>
+                {% endif %}
+
+                <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">{{ review.author.username }}</div>
+                    <div>{{ review.create_date }}</div>
+                </div>
+            </div>
+
+            {% if request.user == review.author %}
+        <div class="my-3">
+            <!-- 수정과 삭제 -->
+            <a href="{% url 'recapp:review_modify' review.id  %}"
+               class="btn btn-sm btn-outline-secondary">수정</a>
+            <a href="#" class="delete btn btn-sm btn-outline-secondary "
+               data-uri="{% url 'recapp:review_delete' review.id  %}">삭제</a>
+        </div>
+        {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+
+<!--리뷰 생성-->
+    <form action="{% url 'recapp:review_create' place.id %}" method="post" class="my-3">
+        {% csrf_token %}
+
+        {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+    {% for field in form %}
+        {% if field.errors %}
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+        {% endif %}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+        <div class="form-group">
+        <!-- 로그아웃되있는 권한이 없는 anonymous user인 경우 리뷰생성을 disabled 시킨다. -->
+
+            <label for="content">한줄평</label>
+            <textarea {% if not user.is_authenticated %}disabled{% endif %}
+                    name="content" id="content" class="form-control" rows="10"></textarea>
+            <label for="rating">평점</label>
+            <p><input {% if not user.is_authenticated %}disabled{% endif %}
+                    name="rating" id="rating" type="number" min="1" max="5"/><p/>
+
+        </div>
+        <input type="submit" value="리뷰등록" class="btn btn-outline-danger">
+
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".delete").on('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = $(this).data('uri');
+        }
+    });
+});
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

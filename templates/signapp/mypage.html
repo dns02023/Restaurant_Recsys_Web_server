@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container my-3">
+    <h2 class="border-bottom py-2">{{ user.profile.sofo_name }}</h2>
+    {% if user.review_set.count > 0 %}
+        <div>나의 평균 평점 : {{ user.profile.average_rating }}</div>
+    {% else %}
+        <div>아직 남긴 리뷰가 없습니다.</div>
+    {% endif %}
+    </div>
+    <h5 class="border-bottom my-3 py-2">{{user.review_set.count}}개의 리뷰를 남겼습니다.</h5>
+    {% for review in user.review_set.all %}
+    <div class="card my-3">
+        <div class="card-body">
+           <a href={% url 'recapp:detail' review.place.id %}>{{ review.place.place_name }}</a>
+            <div class="card-header">{{ review.rating }}점 입니다.</div>
+            <div class="card-text" style="white-space: pre-line;">{{ review.content }}</div>
+            <div class="d-flex justify-content-end">
+
+                {% if review.modify_date %}
+                <div class="badge badge-light p-2 text-left mx-3">
+                <div class="mb-2">수정됨</div>
+                <div>{{ review.modify_date }}</div>
+                </div>
+                {% endif %}
+
+                <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">{{ review.author.username }}</div>
+                    <div>{{ review.create_date }}</div>
+                </div>
+            </div>
+
+            {% if request.user == review.author %}
+        <div class="my-3">
+            <!-- 수정과 삭제 -->
+            <a href="{% url 'recapp:review_modify' review.id  %}"
+               class="btn btn-sm btn-outline-secondary">수정</a>
+            <a href="#" class="delete btn btn-sm btn-outline-secondary "
+               data-uri="{% url 'recapp:review_delete' review.id  %}">삭제</a>
+        </div>
+        {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

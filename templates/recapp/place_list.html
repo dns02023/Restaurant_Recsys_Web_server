@@ -1,0 +1,103 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+    {% if recommends %}
+        <div>{{ request.user.profile.sofo_name }}님이 좋아할 수도 있는 맛집들</div>
+        <div>
+        {% for recommend in recommends %}
+            <tr>
+            <a href="{% url 'recapp:detail' recommend.id %}">{{ recommend.place_name }}</a>
+            </tr>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+<div class="container my-3">
+    <table class="table">
+        <thead>
+        <tr class="text-center thead-dark">
+            <th>맛집</th>
+            <th>위치</th>
+            <th>#tags</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if place_list %}
+        {% for place in place_list %}
+        <tr>
+            <td>
+                <a href="{% url 'recapp:detail' place.id %}">{{ place.place_name }}</a>
+                <!-- place 상세 정보 조회를 위해 링크를 걸어 둠 -->
+                {% if place.review_set.count > 0 %}
+                <span class="text-danger small ml-2">{{ place.review_set.count }}건의 리뷰</span>
+                {% endif %}
+
+
+            </td>
+            <td>{{ place.place_location }}</td>
+            <td>{{ place.place_tags }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">등록된 맛집이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+<!-- 페이징처리 시작 -->
+<!-- 'place_list' 는 page_obj 컨텍스트 임 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if place_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ place_list.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in place_list.paginator.page_range %}
+
+            {% if page_number >= place_list.number|add:-5 and page_number <= place_list.number|add:5 %}
+
+                {% if page_number == place_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if place_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ place_list.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+

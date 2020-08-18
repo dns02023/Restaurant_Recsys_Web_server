@@ -1,0 +1,40 @@
+{% load static %}
+<!-- stylesheet를 모듈처럼 import하는 맥락 -->
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <!-- stylesheet를 모듈처럼 import하는 맥락 -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <!-- pybo CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>sofo 맛집 추천</title>
+</head>
+<body>
+
+<!-- navigation bar -->
+{% include 'navbar.html' %}
+
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+{% block content %}
+
+{% endblock %}
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+
+<!-- 자바스크립트 소스(script) -->
+<!-- 부트스트랩은 jquery를 필요로 하므로 jquery 먼저 선언한다. -->
+<!-- jQuery JS -->
+<script src="{% static 'jquery-3.5.1.min.js' %}"></script>
+<!-- Bootstrap JS -->
+<script src="{% static 'bootstrap.min.js' %}"></script>
+
+<!-- 자바스크립트 Start -->
+{% block script %}
+{% endblock %}
+<!-- 자바스크립트 End -->
+
+</body>
+</html>
