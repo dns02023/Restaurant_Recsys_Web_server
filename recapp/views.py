@@ -104,7 +104,7 @@ def review_modify(request, review_id):
         #GET이면 그냥 폼 형식만 생성해서 띄워주기
     context = {'review' : review, 'form' : form}
     return render(request, 'recapp/review_form.html', context)
-    #review를 수정하기 위한 별도의 수정 템플릿으로 보내기
+    #review를 수정하기 위한 별도 수정 템플릿으로 보내기
 
 @login_required(login_url='signapp:signin')
 def review_delete(request, review_id):
