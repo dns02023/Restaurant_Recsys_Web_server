@@ -24,7 +24,6 @@ def index(request):
     #이름 순으로 정렬
 
     paginator = Paginator(place_list, 20)
-    #한 페이지당 20개씩 맛집 띄워줌 (20개씩 쪼개는 듯?)
     page_obj = paginator.get_page(page)
 
     recommends = list()
