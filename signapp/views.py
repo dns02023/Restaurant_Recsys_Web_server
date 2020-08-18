@@ -66,7 +66,7 @@ def mypage(request):
 #
 #         else:
 #             if profile_form.is_valid() == False:
-#                 error_msg = '회원 가입에 실패했습니다\n{}'.format(
+#                 error_msg = '회원 가입에 실패\n{}'.format(
 #                     '\n'.join(
 #                         [f'- {error}'
 #                          for key, value in profile_form.errors.items()
