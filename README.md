@@ -24,7 +24,7 @@
 맛집 상세 정보를 조회하면 해당 맛집과 유사한 맛집을 tag 유사도 기반 content-based 기법으로 추천해줍니다.  
 
 추천 결과들을 추천 API 서버에 요청하여 받아온 다음, 사용자에게 서빙합니다.  
-추천 API 서버는 Restaurant_Recsys_RESTAPI_Server 레포지토리를 참고해주세요.    
+추천 API 서버 : https://github.com/dns02023/Restaurant_Recsys_RESTAPI_Server    
 
 
 해당 웹서비스는 고려대학교 맛집 리뷰 게시판 서비스는 KOREAPAS sofo 의 데이터를 활용하였습니다.   
