@@ -29,6 +29,7 @@ def index(request):
     recommends = list()
     if request.user.is_authenticated:
         target = request.user
+        # 개인화 추천 (CF) 요청 => 추천 API 서버 => 추천 결과 => res
         res = ((requests.post(RECSYS_RESTAPI + '/recommender/cfrecommend',
                               data={"sofo_name": target.profile.sofo_name}))).json()
         if res != 'No Review':
@@ -42,8 +43,10 @@ def index(request):
 
 def place_detail(request, place_id):
     place = get_object_or_404(Place ,pk=place_id)
+    # 사용자 행동(맛집 조회) 로그 수집
     if request.user.is_authenticated:
         logger.info('{} {} [{}]'.format(request.user.username, 'BROWSE' ,place.place_name))
+    # 유사한 맛집 (CB) 추천 요청 => 추천 API 서버 => 추천 결과 => res
     res = ((requests.post(RECSYS_RESTAPI + '/recommender/cbrecommend', data={"id" : place.id}))).json()
     similars = list()
     for i in range(len(res)):
@@ -71,6 +74,7 @@ def review_create(request, place_id):
             review.save()
             #폼 형식으로 리뷰 등록하고 redirect로 return
 
+            # training 데이터로 수집
             requests.post(RECSYS_RESTAPI + '/etl/reviewetl',
                           data={"user_name": review.author.profile.sofo_name, "place_name" : review.place.place_name, "rating" : review.rating})
 
