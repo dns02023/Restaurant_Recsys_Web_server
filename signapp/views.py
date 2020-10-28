@@ -20,6 +20,7 @@ def signup(request):
             username = user_form.cleaned_data.get('username')
             raw_password = user_form.cleaned_data.get('password1')
 
+            # credential 매개변수들이 유효하다면, 해당되는 User 객체를 반환해준다.
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
