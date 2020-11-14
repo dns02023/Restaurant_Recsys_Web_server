@@ -44,6 +44,7 @@ ALLOWED_HOSTS = get_secret("ALLOWED_HOSTS")
 
 # logging
 # logging
+LOGSTASH_SERVER = get_secret("LOGSTASH_SERVER")
 LOGGING = {
     'version': 1,
 
@@ -66,73 +67,23 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'format2',
         },
+        'logstash': {
+            'level': 'INFO',
+            'class': 'logstash.TCPLogstashHandler',
+            'host': LOGSTASH_SERVER,
+            'port': 5959,
+            'version': 1,
+        }
     },
 
     'loggers': {
         'recapp.views': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'level': 'INFO',
         },
     },
 
 }
-
-# # logging
-# # logging
-# LOGGING = {
-#     'version': 1,
-#
-#     'disable_existing_loggers': False,
-#
-#     'formatters': {
-#         'format1': {
-#             'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s',
-#             'datefmt': '%d/%b/%Y %H:%M:%S'
-#         },
-#         'format2': {
-#             'format': '%(levelname)s %(message)s'
-#         },
-#     },
-#
-#
-#     'handlers': {
-#         'file': {
-#             'level': 'INFO',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'files/log/testlog.log'),
-#             'formatter': 'format1',
-#         },
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'format2',
-#         },
-#         'logstash' : {
-#             'level': 'INFO',
-#             'class': 'logstash.TCPLogstashHandler',
-#             'host': 'localhost',
-#             'port': 5959,
-#             'version': 1,
-#
-#         }
-#     },
-#
-#     'loggers': {
-#         'recapp.views': {
-#             'handlers': ['logstash'],
-#             'level': 'INFO',
-#         },
-#     },
-#
-# }
-
-
-
-
-
-
-
-
 
 # Application definition
 
