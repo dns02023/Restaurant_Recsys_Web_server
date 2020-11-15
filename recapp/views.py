@@ -47,7 +47,7 @@ def place_detail(request, place_id):
     if request.user.is_authenticated:
         logger.info('{} {} [{}]'.format(request.user.username, 'BROWSE' ,place.place_name))
     # 유사한 맛집 (CB) 추천 요청 => 추천 API 서버 => 추천 결과 => res
-    res = ((requests.post(RECSYS_RESTAPI + '/recommender/cbrecommend', data={"id" : place.id}))).json()
+    res = ((requests.get(RECSYS_RESTAPI + '/recommender/cbrecommend/' + str(place_id)))).json()
     similars = list()
     for i in range(len(res)):
         temp = get_object_or_404(Place, pk=res[i])
