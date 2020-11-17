@@ -67,6 +67,7 @@ def review_create(request, place_id):
         #리뷰 등록 시도(POST), 사용자가 폼 형식으로 작성한 폼 객체를 받는다.
         if form.is_valid():
             review = form.save(commit=False)
+            #폼과 연결된 review 모델을 저장하지는 않고, 객체만 반환 (아직 설정되지 않은 객체 필드 값 author, place들이 존재함)
             review.author = request.user
             #현재 로그인한, 즉 현재 요청을 보내는 user 객체를 author로 설정
             review.place = place
